@@ -1,30 +1,25 @@
-﻿using System.Drawing;
-using Varollo.AsepriteImporter.Serialization;
+﻿using Newtonsoft.Json;
+using Varollo.AsepriteImporter.Serialization.Converters;
 
-namespace Varollo.AsepriteImporter
+namespace Varollo.AsepriteImporter.Data
 {
-    public readonly struct TagData
+    public struct TagData
     {
-        internal TagData(SerializedTagData serializedTag)
-        {
-            Name = serializedTag.Name;
-            From = serializedTag.From ?? 0;
-            To = serializedTag.To ?? 0;
-            Direction = serializedTag.Direction;
-            Color = GetColorFromHex(serializedTag.Color);
-        }
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public string Name { get; internal set; }
 
-        public string Name { get; }
-        public int From { get; }
-        public int To { get; }
-        public AnimationDirection Direction { get; }
-        public Color Color { get; }
+        [JsonProperty("from", NullValueHandling = NullValueHandling.Ignore)]
+        public int? From { get; internal set; }
 
-        private static Color GetColorFromHex(string hex)
-        {
-            var converter = new ColorConverter();
-            var col = (Color) converter.ConvertFromString(hex);
-            return col;
-        }
+        [JsonProperty("to", NullValueHandling = NullValueHandling.Ignore)]
+        public int? To { get; internal set; }
+
+        [JsonProperty("direction", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(AnimationDirectionConverter))]
+        public AnimationDirection Direction { get; internal set; }
+
+        [JsonProperty("color", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(HexToColorConverter))]
+        public string Color { get; internal set; }
     }
 }

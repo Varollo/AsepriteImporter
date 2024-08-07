@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
-using System.Linq;
-using Varollo.AsepriteImporter.Serialization;
 
 namespace Varollo.AsepriteImporter
 {
@@ -9,12 +7,7 @@ namespace Varollo.AsepriteImporter
     {
         public static AsepriteSheet ParseJsonData(string json)
         {
-            SerializedSheetData data = JsonConvert.DeserializeObject<SerializedSheetData>(json);
-
-            MetaData? meta = data.Meta.HasValue ? new(data.Meta.Value) : null;
-            AsepriteFrame[] frames = data.Frames.Select(frame => new AsepriteFrame(frame)).ToArray();
-
-            return new(frames, meta);
+            return JsonConvert.DeserializeObject<AsepriteSheet>(json);
         }
 
         public static AsepriteSheet LoadJsonData(string path)

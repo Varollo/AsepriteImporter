@@ -1,3 +1,4 @@
+using Varollo.AsepriteImporter.Data;
 using static Varollo.AsepriteImporter.Tests.SerializationTestsData;
 
 namespace Varollo.AsepriteImporter.Tests
@@ -9,7 +10,7 @@ namespace Varollo.AsepriteImporter.Tests
         public void LoadSheet_ContainFrames(Dictionary<ArgData, object> data)
         {
             AsepriteSheet sheet = CastData<AsepriteSheet>(data[ArgData.Sheet]);
-            Assert.NotEmpty(sheet);
+            Assert.NotEmpty(sheet.Frames);
         }
 
         [Theory]
@@ -34,8 +35,8 @@ namespace Varollo.AsepriteImporter.Tests
         public void LoadSheet_BoundsLoaded(Dictionary<ArgData, object> data)
         {
             var frame = CastData<AsepriteFrame>(data[ArgData.Frame]);
-            Assert.False(frame.Bounds.IsEmpty,
-                $"Frame '{frame.Name}' ({CastData<int>(data[ArgData.FrameID]):00}) has an empty rect ({nameof(AsepriteFrame.Bounds)})");
+            Assert.False(frame.SpriteRect.IsEmpty,
+                $"Frame '{frame.Name}' ({CastData<int>(data[ArgData.FrameID]):00}) has an empty rect ({nameof(AsepriteFrame.SpriteRect)})");
         }
 
         [Theory]
@@ -47,7 +48,7 @@ namespace Varollo.AsepriteImporter.Tests
 
             var tags = CastData<MetaData>(data[ArgData.Meta]).Tags;
 
-            if (tags == null || tags.Length == 0) 
+            if (tags == null || tags.Length == 0)
                 return;
 
             for (int i = 0; i < tags.Length; i++)

@@ -18,11 +18,11 @@ namespace Varollo.AsepriteImporter.Tests
             var sheet = CachedData<AsepriteSheet>(ArgData.Sheet);
             var metaData = sheet.MetaData.HasValue ? Data(ArgData.Meta, sheet.MetaData) : default;
 
-            return CachedData<AsepriteSheet>(ArgData.Sheet).Select((frame, i) => 
+            return CachedData<AsepriteSheet>(ArgData.Sheet).Frames.Select((frame, i) =>
             {
                 if (sheet.MetaData.HasValue)
                     return DataSet(sheetData, Data(ArgData.Frame, frame), Data(ArgData.FrameID, i), metaData);
-                else 
+                else
                     return DataSet(sheetData, Data(ArgData.Frame, frame), Data(ArgData.FrameID, i));
             });
         }

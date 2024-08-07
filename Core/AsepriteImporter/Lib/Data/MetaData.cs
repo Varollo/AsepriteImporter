@@ -1,34 +1,39 @@
-﻿using System;
-using System.Linq;
-using Varollo.AsepriteImporter.Serialization;
+﻿using Newtonsoft.Json;
+using System;
+using System.Drawing;
+using Varollo.AsepriteImporter.Serialization.Converters;
 
-namespace Varollo.AsepriteImporter
+namespace Varollo.AsepriteImporter.Data
 {
-    public readonly struct MetaData
+    public struct MetaData
     {
-        internal MetaData(SerializedMetaData serializedMeta)
-        {
-            App = serializedMeta.App;
-            Version = serializedMeta.Version;
-            Image = serializedMeta.Image;
-            Format = serializedMeta.Format;
-            Width = serializedMeta.Size.W.Value;
-            Height = serializedMeta.Size.H.Value;
-            Scale = serializedMeta.Scale.Value;
-            
-            Tags = serializedMeta.FrameTags?.Select(tag => new TagData(tag)).ToArray();
-            Layers = serializedMeta.Layers?.Select(layer => new LayerData(layer)).ToArray();
-        }
+        [JsonProperty("app", NullValueHandling = NullValueHandling.Ignore)]
+        public Uri App { get; internal set; }
 
-        public Uri App { get; }
-        public string Version { get; }
-        public string Image { get; }
-        public string Format { get; }
-        public int Width { get; }
-        public int Height { get; }
-        public int Scale { get; }
-        public TagData[] Tags { get; }
-        public LayerData[] Layers { get; }
-        public SliceData[] Slices => throw new NotImplementedException();
+        [JsonProperty("version", NullValueHandling = NullValueHandling.Ignore)]
+        public string Version { get; internal set; }
+
+        [JsonProperty("image", NullValueHandling = NullValueHandling.Ignore)]
+        public string Image { get; internal set; }
+
+        [JsonProperty("format", NullValueHandling = NullValueHandling.Ignore)]
+        public string Format { get; internal set; }
+
+        [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore)]
+        public Point Size { get; internal set; }
+
+        [JsonProperty("scale", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(ParseStringConverter))]
+        public int Scale { get; internal set; }
+
+        [JsonProperty("frameTags", NullValueHandling = NullValueHandling.Ignore)]
+        public TagData[] Tags { get; internal set; }
+
+        [JsonProperty("layers", NullValueHandling = NullValueHandling.Ignore)]
+        public LayerData[] Layers { get; internal set; }
+
+        // TODO
+        //[JsonProperty("slices", NullValueHandling = NullValueHandling.Ignore)]
+        //public SliceData[] Slices { get; internal set; }
     }
 }

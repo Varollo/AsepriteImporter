@@ -30,7 +30,7 @@ namespace Varollo.AsepriteImporter.Tests
         protected static T CachedData<T>(TArgEnum key)
         {
             Assert.True(_cachedData.TryGetValue(key, out var value), $"Data '{key}' must already be cached.");
-            
+
             if (value is T castValue)
                 return castValue;
 

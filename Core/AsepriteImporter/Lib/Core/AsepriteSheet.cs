@@ -1,37 +1,42 @@
-﻿using System;
-using System.Collections;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using Varollo.AsepriteImporter.Data;
 
 namespace Varollo.AsepriteImporter
 {
-    public class AsepriteSheet : IEnumerable<AsepriteFrame>
+    public class AsepriteSheet
     {
-        private readonly Dictionary<string, List<AsepriteFrame>> _frameNameMap;
-        private readonly AsepriteFrame[] _frames;
+        private Dictionary<string, List<AsepriteFrame>> _frameNameMap = null;
 
-        internal AsepriteSheet(AsepriteFrame[] frames, MetaData? metaData = null)
-        {
-            MetaData = metaData;
-            FrameCount = frames.Length;
+        private int? _frameCount = null;
 
-            _frames = frames;
-            _frameNameMap = new();
+        public AsepriteFrame this[int index] => Frames[(index %= FrameCount) < 0 ? -index : index];
+        public IEnumerable<AsepriteFrame> this[string name] => FrameNameMap[name];
 
-            if (metaData?.Tags != null)
-                InitializeMapByTagData(frames, metaData.Value.Tags);
-            else
-                InitializeMapByFrameName(frames);
-        }
+        [JsonProperty("frames", NullValueHandling = NullValueHandling.Ignore)]
+        public AsepriteFrame[] Frames { get; internal set; }
 
-        public AsepriteFrame this[int index] => _frames[(index %= FrameCount) < 0 ? -index : index];
-        public IEnumerable<AsepriteFrame> this[string name] => _frameNameMap[name];
+        public MetaData? MetaData { get; internal set; }
+        public int FrameCount => _frameCount ??= Frames.Length;
 
-        public MetaData? MetaData { get; }
-        public int FrameCount { get; }
+        private Dictionary<string, List<AsepriteFrame>> FrameNameMap => _frameNameMap ??= InitializeMap();
 
         public bool HasAnimation(string name)
         {
-            return _frameNameMap.ContainsKey(name);
+            return FrameNameMap.ContainsKey(name);
+        }
+
+        private Dictionary<string, List<AsepriteFrame>> InitializeMap()
+        {
+            _frameNameMap = new();
+
+            if (MetaData?.Tags != null)
+                InitializeMapByTagData(Frames, MetaData.Value.Tags);
+            else
+                InitializeMapByFrameName(Frames);
+
+            return _frameNameMap;
         }
 
         private void InitializeMapByFrameName(AsepriteFrame[] frames)
@@ -54,7 +59,7 @@ namespace Varollo.AsepriteImporter
             while (frameList.Count > 0)
                 foreach (var tag in tags)
                 {
-                    int maxIndex = Math.Abs(tag.To - tag.From);
+                    int maxIndex = Math.Abs(tag.To.Value - tag.From.Value);
                     int frameCount = maxIndex + 1;
 
                     int loopFrameCount = frameCount;
@@ -74,14 +79,11 @@ namespace Varollo.AsepriteImporter
 
         private void AsignFrameToTag(AsepriteFrame frame, string tagName)
         {
-            if (_frameNameMap.TryGetValue(tagName, out var list))
+            if (FrameNameMap.TryGetValue(tagName, out var list))
                 list.Add(frame);
             else
-                _frameNameMap.Add(tagName, new() { frame });
+                FrameNameMap.Add(tagName, new() { frame });
         }
-
-        public IEnumerator<AsepriteFrame> GetEnumerator() => ((IEnumerable<AsepriteFrame>)_frames).GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => _frames.GetEnumerator();
 
         private static int ProcessFrameIndex(AnimationDirection direction, int index, int maxIndex)
         {

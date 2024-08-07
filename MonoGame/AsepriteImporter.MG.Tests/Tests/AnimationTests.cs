@@ -15,7 +15,7 @@ namespace Varollo.AsepriteImporter.MG.Tests
             Rectangle frame = Rectangle.Empty;
             int frameCounter = 1;
 
-            SimmulateGameLoop( components: new IGameComponent[] { CastData<IGameComponent>(data[ArgData.Counter]) },
+            SimmulateGameLoop(components: new IGameComponent[] { CastData<IGameComponent>(data[ArgData.Counter]) },
                 initialTime: CastData<TimeSpan>(data[ArgData.StartTime]),
                 totalTime: CastData<TimeSpan>(data[ArgData.EndTime]),
                 frameTime: CastData<TimeSpan>(data[ArgData.FrameTime]),
@@ -40,7 +40,7 @@ namespace Varollo.AsepriteImporter.MG.Tests
             var animator = CastData<AsepriteAnimator>(data[ArgData.Animator]);
             var animation = CastData<AsepriteAnimation>(data[ArgData.Animation]);
 
-            var firstFrame = sheet[animation.Name].First().Bounds;
+            var firstFrame = sheet[animation.Name].First().SpriteRect;
             var frame = animator.GetFrame(animation.Name);
 
             Assert.Equal(firstFrame.X, frame.X);
@@ -98,7 +98,7 @@ namespace Varollo.AsepriteImporter.MG.Tests
 
         private static TCast CastData<TCast>(object data)
         {
-            return (TCast) data;
+            return (TCast)data;
         }
     }
 }

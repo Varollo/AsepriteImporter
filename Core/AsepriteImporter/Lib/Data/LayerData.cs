@@ -1,21 +1,19 @@
-﻿using Varollo.AsepriteImporter.Serialization;
+﻿using Newtonsoft.Json;
 
-namespace Varollo.AsepriteImporter
+namespace Varollo.AsepriteImporter.Data
 {
-    public readonly struct LayerData
+    public struct LayerData
     {
-        internal LayerData(SerializedLayerData serializedLayer)
-        {
-            Name = serializedLayer.Name;
-            Group = serializedLayer.Group;
-            Opacity = serializedLayer.Opacity ?? 0;
-            BlendMode = serializedLayer.BlendMode;
-        }
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public string Name { get; internal set; }
 
-        public string Name { get; }
-        public string Group { get; }
-        public int Opacity { get; }
-        public string BlendMode { get; }
+        [JsonProperty("group", NullValueHandling = NullValueHandling.Ignore)]
+        public string Group { get; internal set; }
 
+        [JsonProperty("opacity", NullValueHandling = NullValueHandling.Ignore)]
+        public int? Opacity { get; internal set; }
+
+        [JsonProperty("blendMode", NullValueHandling = NullValueHandling.Ignore)]
+        public string BlendMode { get; internal set; }
     }
 }

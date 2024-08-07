@@ -37,7 +37,7 @@ namespace Varollo.AsepriteImporter.MG
             {
                 AsepriteFrame frame = GetFrameByID(i);
                 k += frame.Duration.Milliseconds;
-                
+
                 if (k >= timeInTicks)
                     return frame;
             }

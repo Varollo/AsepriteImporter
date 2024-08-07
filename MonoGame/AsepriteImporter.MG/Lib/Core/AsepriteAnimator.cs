@@ -36,7 +36,7 @@ namespace Varollo.AsepriteImporter.MG
             AsepriteAnimation animation = GetAnimation(name);
             AsepriteFrame frame = animation.GetFrameByTime(_counter.GetCount());
 
-            System.Drawing.Rectangle bounds = frame.Bounds;
+            System.Drawing.Rectangle bounds = frame.SpriteRect;
             return new(bounds.X, bounds.Y, bounds.Width, bounds.Height);
         }
     }

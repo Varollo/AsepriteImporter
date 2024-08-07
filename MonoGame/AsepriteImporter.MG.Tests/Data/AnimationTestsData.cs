@@ -22,8 +22,8 @@ namespace Varollo.AsepriteImporter.MG.Tests
                 Data(ArgData.Counter, counter),
                 Data(ArgData.Animator, new AsepriteAnimator(counter, CachedData<AsepriteSheet>(ArgData.Sheet))),
                 Data(ArgData.Animation, CachedData<AsepriteAnimator>(ArgData.Animator).GetAnimation(animTag)),
-                Data(ArgData.StartTime, TimeSpan.FromMilliseconds(startTimeMillis)), 
-                Data(ArgData.EndTime, TimeSpan.FromMilliseconds(endTimeMillis)), 
+                Data(ArgData.StartTime, TimeSpan.FromMilliseconds(startTimeMillis)),
+                Data(ArgData.EndTime, TimeSpan.FromMilliseconds(endTimeMillis)),
                 Data(ArgData.FrameTime, TimeSpan.FromMilliseconds(frameTimeMillis)));
         }
 

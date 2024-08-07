@@ -2,9 +2,9 @@
 using System;
 using System.Globalization;
 
-namespace Varollo.AsepriteImporter.Serialization
+namespace Varollo.AsepriteImporter.Serialization.Converters
 {
-    public class AnimationDirectionConverter : JsonConverter<AnimationDirection>
+    internal class AnimationDirectionConverter : JsonConverter<AnimationDirection>
     {
         public override AnimationDirection ReadJson(JsonReader reader, Type objectType, AnimationDirection existingValue, bool hasExistingValue, JsonSerializer serializer)
         {

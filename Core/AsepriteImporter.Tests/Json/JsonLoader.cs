@@ -17,7 +17,7 @@
                 Assert.True(File.Exists(path), $"No file at path: '{path}'");
                 sheet = AsepriteDataLoader.LoadJsonData(path);
             }
-            
+
             return sheet;
         }
 

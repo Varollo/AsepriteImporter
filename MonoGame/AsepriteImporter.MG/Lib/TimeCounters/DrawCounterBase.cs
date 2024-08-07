@@ -10,7 +10,7 @@ namespace Varollo.AsepriteImporter.MG
 
         private long _count;
 
-        public DrawCounterBase(Game game, int drawOrder = int.MinValue) : this (game?.Components, drawOrder) { }
+        public DrawCounterBase(Game game, int drawOrder = int.MinValue) : this(game?.Components, drawOrder) { }
         public DrawCounterBase(GameComponentCollection components, int drawOrder = int.MinValue)
         {
             components?.Add(this);

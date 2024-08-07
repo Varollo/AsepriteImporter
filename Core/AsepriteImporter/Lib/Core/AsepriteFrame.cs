@@ -1,24 +1,33 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Drawing;
-using Varollo.AsepriteImporter.Serialization;
+using Varollo.AsepriteImporter.Serialization.Converters;
+using RectangleConverter = Varollo.AsepriteImporter.Serialization.Converters.RectangleConverter;
+using SizeToPointConverter = Varollo.AsepriteImporter.Serialization.Converters.SizeToPointConverter;
 
 namespace Varollo.AsepriteImporter
 {
-    public readonly struct AsepriteFrame
+    public struct AsepriteFrame
     {
-        internal AsepriteFrame(SerializedFrameData serializedFrame)
-        {
-            Name = serializedFrame.Filename;
-            Duration = TimeSpan.FromMilliseconds(serializedFrame.Duration ?? 0);
-            Bounds = new(
-                x: serializedFrame.Frame.X ?? 0,
-                y: serializedFrame.Frame.Y ?? 0,
-                width: serializedFrame.Frame.W ?? 0,
-                height: serializedFrame.Frame.H ?? 0);
-        }
+        [JsonProperty("filename", NullValueHandling = NullValueHandling.Ignore)]
+        public string Name { get; internal set; }
 
-        public string Name { get; }
-        public Rectangle Bounds { get; }
-        public TimeSpan Duration { get; }
+        [JsonProperty("rotated", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? Rotated { get; internal set; }
+
+        [JsonProperty("trimmed", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? Trimmed { get; internal set; }
+
+        [JsonProperty("frame", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(RectangleConverter))]
+        public Rectangle SpriteRect { get; internal set; }
+
+        [JsonProperty("sourceSize", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(SizeToPointConverter))]
+        public Point SpriteSize { get; internal set; }
+
+        [JsonProperty("duration", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(DurationToTimeSpanConverter))]
+        public TimeSpan Duration { get; internal set; }
     }
 }
