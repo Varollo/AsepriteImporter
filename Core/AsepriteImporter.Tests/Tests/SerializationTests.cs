@@ -1,4 +1,4 @@
-using Varollo.AsepriteImporter.Data;
+using Varollo.AsepriteImporter.MetaData;
 using static Varollo.AsepriteImporter.Tests.SerializationTestsData;
 
 namespace Varollo.AsepriteImporter.Tests
@@ -17,26 +17,35 @@ namespace Varollo.AsepriteImporter.Tests
         [ClassData(typeof(SerializationTestsData))]
         public void LoadSheet_DurationLoaded(Dictionary<ArgData, object> data)
         {
-            var frame = CastData<AsepriteFrame>(data[ArgData.Frame]);
-            Assert.NotEqual(TimeSpan.Zero, frame.Duration);
+            AsepriteFrame[] frames = CastData<AsepriteFrame[]>(data[ArgData.Frames]);
+            for (int i = 0; i < frames.Length; i++)
+            {
+                AsepriteFrame frame = frames[i];
+                if (frame.Duration == TimeSpan.Zero)
+                    Assert.Fail($"Frame {frame.Name} ({i:00}) has duration ({nameof(AsepriteFrame.Duration)}) of 0.");
+            }
         }
 
         [Theory]
         [ClassData(typeof(SerializationTestsData))]
         public void LoadSheet_FramesGroupedByName(Dictionary<ArgData, object> data)
         {
-            var sheet = CastData<AsepriteSheet>(data[ArgData.Sheet]);
-            var frame = CastData<AsepriteFrame>(data[ArgData.Frame]);
-            Assert.NotEmpty(sheet[frame.Name]);
+            var frames = CastData<AsepriteFrame[]>(data[ArgData.Frames]);
+            Assert.NotEmpty(frames);
         }
 
         [Theory]
         [ClassData(typeof(SerializationTestsData))]
         public void LoadSheet_BoundsLoaded(Dictionary<ArgData, object> data)
         {
-            var frame = CastData<AsepriteFrame>(data[ArgData.Frame]);
-            Assert.False(frame.SpriteRect.IsEmpty,
-                $"Frame '{frame.Name}' ({CastData<int>(data[ArgData.FrameID]):00}) has an empty rect ({nameof(AsepriteFrame.SpriteRect)})");
+            AsepriteFrame[] frames = CastData<AsepriteFrame[]>(data[ArgData.Frames]);
+            for (int i = 0; i < frames.Length; i++)
+            {
+                AsepriteFrame frame = frames[i];
+                
+                if (frame.SpriteRect.IsEmpty)
+                    Assert.Fail($"Frame '{frame.Name}' ({i:00}) has an empty rect ({nameof(AsepriteFrame.SpriteRect)})");
+            }
         }
 
         [Theory]
@@ -46,21 +55,21 @@ namespace Varollo.AsepriteImporter.Tests
             if (!data.ContainsKey(ArgData.Meta))
                 return;
 
-            var tags = CastData<MetaData>(data[ArgData.Meta]).Tags;
+            var tags = CastData<AsepriteMetaData>(data[ArgData.Meta]).Tags;
 
             if (tags == null || tags.Length == 0)
                 return;
 
             for (int i = 0; i < tags.Length; i++)
             {
-                TagData tag = tags[i];
+                AsepriteTagData tag = tags[i];
 
                 // Test: Tag loaded?
                 Assert.NotEqual(default, tag);
 
                 // Test: Is direction valid?
                 Assert.True(Enum.IsDefined(tag.Direction),
-                    $"Tag '{tag.Name}' ({i:00}) has invalid '{nameof(TagData.Direction)}' value of '{(int)tag.Direction}'.");
+                    $"Tag '{tag.Name}' ({i:00}) has invalid '{nameof(AsepriteTagData.Direction)}' value of '{(int)tag.Direction}'.");
             }
         }
 
@@ -71,16 +80,16 @@ namespace Varollo.AsepriteImporter.Tests
             if (!data.ContainsKey(ArgData.Meta))
                 return;
 
-            var tags = CastData<MetaData>(data[ArgData.Meta]).Tags;
+            var tags = CastData<AsepriteMetaData>(data[ArgData.Meta]).Tags;
 
             if (tags == null || tags.Length == 0)
                 return;
 
             for (int i = 0; i < tags.Length; i++)
             {
-                TagData tag = tags[i];
+                AsepriteTagData tag = tags[i];
                 Assert.True(Enum.IsDefined(tag.Direction),
-                    $"Tag '{tag.Name}' ({i:00}) has invalid '{nameof(TagData.Direction)}' value of '{(int)tag.Direction}'.");
+                    $"Tag '{tag.Name}' ({i:00}) has invalid '{nameof(AsepriteTagData.Direction)}' value of '{(int)tag.Direction}'.");
             }
         }
 
@@ -91,14 +100,14 @@ namespace Varollo.AsepriteImporter.Tests
             if (!data.ContainsKey(ArgData.Meta))
                 return;
 
-            var layers = CastData<MetaData>(data[ArgData.Meta]).Layers;
+            var layers = CastData<AsepriteMetaData>(data[ArgData.Meta]).Layers;
 
             if (layers == null || layers.Length == 0)
                 return;
 
             for (int i = 0; i < layers.Length; i++)
             {
-                LayerData layer = layers[i];
+                AsepriteLayerData layer = layers[i];
                 Assert.NotEqual(default, layer);
             }
         }

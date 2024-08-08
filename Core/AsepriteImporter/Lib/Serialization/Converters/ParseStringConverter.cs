@@ -5,7 +5,7 @@ namespace Varollo.AsepriteImporter.Serialization.Converters
 {
     internal class ParseStringConverter : JsonConverter
     {
-        public override bool CanConvert(Type t) => t == typeof(int) || t == typeof(int?);
+        public override bool CanConvert(Type t) => t == typeof(int) || t == typeof(int?) || t == typeof(double) || t == typeof(double?);
 
         public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
         {
@@ -15,7 +15,17 @@ namespace Varollo.AsepriteImporter.Serialization.Converters
             if (int.TryParse(value, out int l))
                 return l;
 
-            throw new Exception("Cannot unmarshal type int");
+            if (double.TryParse(value, out double d))
+                return d;
+
+            int comma = value.IndexOf(',');
+            value = value.Remove(comma, 1);
+            value = value.Insert(comma, ".");
+
+            if (double.TryParse(value, out d))
+                return d;
+
+            throw new Exception("Cannot unmarshal type int or double");
         }
 
         public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
@@ -25,8 +35,13 @@ namespace Varollo.AsepriteImporter.Serialization.Converters
                 serializer.Serialize(writer, null);
                 return;
             }
-            var value = (int)untypedValue;
-            serializer.Serialize(writer, value.ToString());
+
+            if (untypedValue is int i)
+                serializer.Serialize(writer, i.ToString());
+
+            else if (untypedValue is double d)
+                serializer.Serialize(writer, d.ToString(System.Globalization.CultureInfo.InvariantCulture));
+
             return;
         }
 

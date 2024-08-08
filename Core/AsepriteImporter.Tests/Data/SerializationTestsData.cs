@@ -5,33 +5,25 @@ namespace Varollo.AsepriteImporter.Tests
     {
         public override IEnumerator<object[]> GetEnumerator()
         {
-            foreach (var dataSet in AllFrameData(JsonPath.NO_META))
-                yield return dataSet;
-
-            foreach (var dataSet in AllFrameData(JsonPath.WITH_META))
-                yield return dataSet;
+            yield return SetupData(JsonPath.NO_META);
+            yield return SetupData(JsonPath.WITH_META);
         }
 
-        private static IEnumerable<object[]> AllFrameData(string jsonPath)
+        private static object[] SetupData(string jsonPath)
         {
             var sheetData = Data(ArgData.Sheet, JsonLoader.LoadSheet(jsonPath));
             var sheet = CachedData<AsepriteSheet>(ArgData.Sheet);
-            var metaData = sheet.MetaData.HasValue ? Data(ArgData.Meta, sheet.MetaData) : default;
 
-            return CachedData<AsepriteSheet>(ArgData.Sheet).Frames.Select((frame, i) =>
-            {
-                if (sheet.MetaData.HasValue)
-                    return DataSet(sheetData, Data(ArgData.Frame, frame), Data(ArgData.FrameID, i), metaData);
-                else
-                    return DataSet(sheetData, Data(ArgData.Frame, frame), Data(ArgData.FrameID, i));
-            });
+            if (sheet.MetaData.HasValue)
+                return DataSet(sheetData, Data(ArgData.Meta, sheet.MetaData), Data(ArgData.Frames, sheet.Frames));
+            else
+                return DataSet(sheetData, Data(ArgData.Frames, sheet.Frames));
         }
 
         public enum ArgData
         {
             Sheet,
-            Frame,
-            FrameID,
+            Frames,
             Meta,
         }
     }

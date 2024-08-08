@@ -1,31 +1,32 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Globalization;
+using Varollo.AsepriteImporter.MetaData;
 
 namespace Varollo.AsepriteImporter.Serialization.Converters
 {
-    internal class AnimationDirectionConverter : JsonConverter<AnimationDirection>
+    internal class AnimationDirectionConverter : JsonConverter<AsepriteAnimationDirection>
     {
-        public override AnimationDirection ReadJson(JsonReader reader, Type objectType, AnimationDirection existingValue, bool hasExistingValue, JsonSerializer serializer)
+        public override AsepriteAnimationDirection ReadJson(JsonReader reader, Type objectType, AsepriteAnimationDirection existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             return reader.Value.ToString() switch
             {
-                "forward" => AnimationDirection.Forward,
-                "reverse" => AnimationDirection.Reverse,
-                "pingpong" => AnimationDirection.PingPong,
-                "pingpong_reverse" => AnimationDirection.PingPongReverse,
-                _ => (AnimationDirection)Enum.Parse(typeof(AnimationDirection), StringToPascal(reader.Value.ToString()))
+                "forward" => AsepriteAnimationDirection.Forward,
+                "reverse" => AsepriteAnimationDirection.Reverse,
+                "pingpong" => AsepriteAnimationDirection.PingPong,
+                "pingpong_reverse" => AsepriteAnimationDirection.PingPongReverse,
+                _ => (AsepriteAnimationDirection)Enum.Parse(typeof(AsepriteAnimationDirection), StringToPascal(reader.Value.ToString()))
             };
         }
 
-        public override void WriteJson(JsonWriter writer, AnimationDirection value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, AsepriteAnimationDirection value, JsonSerializer serializer)
         {
             writer.WriteValue(value switch
             {
-                AnimationDirection.Forward => "forward",
-                AnimationDirection.Reverse => "reverse",
-                AnimationDirection.PingPong => "pingpong",
-                AnimationDirection.PingPongReverse => "pingpong_reverse",
+                AsepriteAnimationDirection.Forward => "forward",
+                AsepriteAnimationDirection.Reverse => "reverse",
+                AsepriteAnimationDirection.PingPong => "pingpong",
+                AsepriteAnimationDirection.PingPongReverse => "pingpong_reverse",
                 _ => value.ToString(),
             });
         }
