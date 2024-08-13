@@ -18,11 +18,14 @@
 
   <!--[ Package MetaData ]-->
   <PropertyGroup>
-    <PackageVersion>1.0.2</PackageVersion>
-    <Title>Aseprite Importer</Title>
+    <PackageVersion>1.0.3</PackageVersion>
+    <PackageReleaseNotes>+ Added configuration for GitHub Packages</PackageReleaseNotes>    
     
+    <Title>Aseprite Importer</Title>    
     <Authors>Varollo</Authors>
-    <RepositoryUrl>https://github.com/Varollo/aseprite-importer</RepositoryUrl>
+    
+    <RepositoryUrl>https://github.com/Varollo/aseprite-importer/</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Varollo/aseprite-importer/</PackageProjectUrl>
     
     <PackageTags>
       .Net;Json;Aseprite;PixelArt;Pixel;Art
@@ -45,5 +48,6 @@
     <None Include="$..\..\..\..\..\Resources\Package\Common\readme.md" Pack="true" PackagePath="" />
     <None Include="$..\..\..\..\..\Resources\Package\Core\icon.png" Pack="true" PackagePath="" />
     <None Include="$..\..\..\..\..\LICENSE.txt" Pack="true" PackagePath="" />
+    <None Include="$..\..\..\..\..\nuget.config" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
