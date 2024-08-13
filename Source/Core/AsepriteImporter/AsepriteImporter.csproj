@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">  
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call postbuild.bat $(TargetDir) $(AssemblyName)" WorkingDirectory="$(SolutionDir)" />
+  </Target>
+  
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)/README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)\LICENSE.txt" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+    
+</Project>
