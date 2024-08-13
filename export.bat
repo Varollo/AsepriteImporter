@@ -10,9 +10,7 @@ CALL :Pack "AsepriteImporter" "Source\Core\AsepriteImporter" %o%
 CALL :Build "AsepriteImporter.MG" "Source\MonoGame\AsepriteImporter.MG" %o%
 CALL :Pack "AsepriteImporter.MG" "Source\MonoGame\AsepriteImporter.MG" %o%
 
-ECHO "> [ DONE! ] Press any key to continue..."
 PAUSE
-
 CALL explorer.exe "%o%"
 EXIT /B %ERRORLEVEL%
 

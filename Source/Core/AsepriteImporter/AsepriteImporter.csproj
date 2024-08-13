@@ -7,6 +7,10 @@
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   
+  <PropertyGroup>
+    <IncludeContentInPack>true</IncludeContentInPack>
+  </PropertyGroup>
+
   <!--[ Dependencies ]-->
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -14,7 +18,7 @@
 
   <!--[ Package MetaData ]-->
   <PropertyGroup>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.0.2</PackageVersion>
     <Title>Aseprite Importer</Title>
     
     <Authors>Varollo</Authors>
@@ -30,14 +34,16 @@
     </Description>
 
     <PackageIconUrl>icon</PackageIconUrl>
-    <PackageLicenseUrl>LICENSE</PackageLicenseUrl>
-    <PackageReadmeUrl>readme</PackageReadmeUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <!--[ Package Resources ]-->
+  <!--only worked with explicit path "..\..\..\..\..\", $(SolutionDir) fails ¯\_(ツ)_/¯-->
   <ItemGroup>
-    <None Include="$(SolutionDir)\Resources\Package\Common\readme.md" Pack="true" PackagePath="\" />
-    <None Include="$(SolutionDir)\Resources\Package\Core\icon.png" Pack="true" PackagePath="\" />
-    <None Include="$(SolutionDir)\LICENSE.txt" Pack="true" PackagePath="\" />
+    <None Include="$..\..\..\..\..\Resources\Package\Common\readme.md" Pack="true" PackagePath="" />
+    <None Include="$..\..\..\..\..\Resources\Package\Core\icon.png" Pack="true" PackagePath="" />
+    <None Include="$..\..\..\..\..\LICENSE.txt" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
