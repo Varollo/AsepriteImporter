@@ -34,6 +34,9 @@ namespace Varollo.AsepriteImporter.MG
         /// <param name="drawOrder">[optional] Order to count passed time, among other components.</param>
         public DrawCounterBase(GameComponentCollection components, int drawOrder = int.MinValue)
         {
+            DrawOrder = drawOrder;
+            Visible = true;
+
             components?.Add(this);
         }
 

@@ -17,8 +17,10 @@
 
   <!--[ Package MetaData ]-->
   <PropertyGroup>
-    <PackageVersion>1.0.3</PackageVersion>
-    <PackageReleaseNotes>+ Added configuration for GitHub Packages</PackageReleaseNotes>
+    <PackageVersion>1.0.4</PackageVersion>
+    <PackageReleaseNotes>
+      ~ Fixed Draw Counters not visible by default
+    </PackageReleaseNotes>
     
     <Title>Aseprite Importer - MonoGame Module</Title>    
     <Authors>Varollo</Authors>
